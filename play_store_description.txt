@@ -1,0 +1,17 @@
+Shed It! is a free practice companion for jazz musicians at any level.
+
+Designed for serious "woodshedding," this app puts a customizable rhythm section right in your pocket. Whether you are a student learning your first ii-V-I or a pro working on complex progressions, Shed It! provides the focused environment you need to improve.
+
+Key Features:
+1) Interactive Chord Chart: Follow along with a clear, visual display that highlights the current measure in real-time.
+2) Adjustable Tempo: Start slow to nail the harmony, then speed it up to burn through the changes.
+3) Audio that uses real recorded instruments!
+4) Customizable Mixer: "Drop out" instruments to fit your practice needs. Mute the piano to practice your comping, cut the bass to walk your own lines, or mute the drums to work on your extensive time-feel.
+
+Why Shed It?
+Practicing with static backing tracks can be limiting. Shed It! gives you control over the band, allowing you to isolate specific elements and practice at your own pace. It is the perfect tool for:
+ - Improvisers: Practice soloing over a solid groove.
+ - Pianists/Guitarists: Mute the harmony instrument and practice your comping voicings.
+ - Bassists: Drop the bass track and lock in with the drums.
+No account required. No data collected. Just you, the changes, and the shed. Download today and start practicing smarter!
+Note: this is my first published Android app, and it's free! I appreciate your kindness and toleration of any bugs. Feel free to contact me with feature requests.
