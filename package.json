@@ -1,0 +1,20 @@
+{
+  "name": "shed-it",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "npx http-server www -p 8080",
+    "prepare": "echo Place your web files into the www/ directory",
+    "cap:init": "npx cap init shed-it com.belassiter.shedit --web-dir=www",
+    "cap:add:android": "npx cap add android",
+    "cap:open:android": "npx cap open android"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^5.0.0",
+    "@capacitor/core": "^5.0.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "^5.7.8"
+  }
+}

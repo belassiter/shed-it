@@ -1,0 +1,19 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Ignore local Android keystore and signing properties
+android/app/keystore.jks
+android/keystore.properties
+android/local.properties
+
+# Capacitor / build outputs
+/android/app/build/
+/android/build/
+/android/.gradle/
+/android/.idea/

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">shed-it</string>
+    <string name="title_activity_main">shed-it</string>
+    <string name="package_name">com.belassiter.shedit</string>
+    <string name="custom_url_scheme">com.belassiter.shedit</string>
+</resources>

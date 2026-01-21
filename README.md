@@ -55,3 +55,35 @@ This tool runs entirely in your web browser. Just open the `shedit.html` file to
 This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/).
 
 ![CC BY-NC-SA License](https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-sa.svg)
+
+## Capacitor Android
+
+Follow these steps to wrap the single-file web app in an Android WebView using Capacitor.
+
+- Install Node dependencies:
+
+```bash
+npm install
+```
+
+- Copy the web file into the `www` folder (Windows cmd):
+
+```cmd
+mkdir www
+copy /Y shedit.html www\\index.html
+```
+
+- Initialize Capacitor (config already present):
+
+```bash
+npx cap init shed-it com.belassiter.shedit --web-dir=www
+```
+
+- Add Android and open the project in Android Studio:
+
+```bash
+npx cap add android
+npx cap open android
+```
+
+After opening in Android Studio, build and run on an emulator or device. When you change web files, run `npx cap copy` to sync.

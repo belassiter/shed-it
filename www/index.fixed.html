@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shed It!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for range inputs */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            cursor: pointer;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            height: 8px;
+            background: #d1d5db; /* gray-300 */
+            border-radius: 4px;
+        }
+        input[type=range]::-moz-range-track {
+            height: 8px;
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            margin-top: -4px;
+            height: 16px;
+            width: 16px;
+            background-color: #ffffff; /* white */
+            border-radius: 50%;
+            border: 1px solid #9ca3af; /* gray-400 */
+        }
+         input[type=range]::-moz-range-thumb {
+            height: 16px;
+            width: 16px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            border: 1px solid #9ca3af;
+        }
+        /* Style for disabled button */
+        button:disabled {
+            cursor: not-allowed;
+            background-color: #9ca3af; /* gray-400 */
+        }
+        
+        /* The outer span acts as a rigid, left-aligned column */
+        .chord-span {
+            width: 25%; 
+            text-align: left;
+        }
+
+        /* The inner span is the flexible, styled highlight box */
+        .chord-highlight {
+            transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            min-width: 100%; /* Ensures highlight is at least the width of the column */
+        }
+
+        /* When the outer span is highlighted, the inner span gets the styles */
+        .chord-span.is-highlighted .chord-highlight {
+            background-color: #2563eb; /* bg-blue-600 */
+            color: white;
+        }
+        
+        /* New styles for empty beats on 2 and 4 */
+        .chord-span.is-empty-beat {
+            text-align: right; /* Aligns the inline-block child to the right */
+        }
+
+        .chord-span.is-empty-beat .chord-highlight {
+            min-width: 50%;
+            width: 50%;
+        }
+
+
+        .mute-btn {
+            background-color: #22c55e; /* green-500 */
+        }
+        .mute-btn:hover {
+            background-color: #16a34a; /* green-600 */
+        }
+        .mute-btn.muted {
+            background-color: #ef4444; /* red-500 */
+        }
+         .mute-btn.muted:hover {
+            background-color: #dc2626; /* red-600 */
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <div class="w-full max-w-5xl mx-auto p-4 sm:p-6 md:p-8 bg-white rounded-2xl shadow-2xl border border-gray-200">
+        <div class="text-center mb-6">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Shed It!</h1>
+            <p class="text-gray-600 mt-2 text-lg">The jazz play-along</p>
+            <p class="text-gray-500 mt-1 text-sm">by Brian Einstein Lassiter</p>
+        </div>
+
+        <!-- Progression Container -->
+        <div class="mb-6 bg-slate-50 p-4 sm:p-6 border border-gray-200 rounded-xl">
+            <div id="progression-display" class="text-center">
+                <!-- Dynamic content will be injected here -->
+            </div>
+        </div>
+        
+        <!-- Transport & Display -->
+        <div class="flex flex-col items-center mb-8">
+            <button id="play-stop-btn" class="w-full md:w-1/2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg text-xl transition-all duration-200 shadow-lg" disabled>
+                Loading Samples...
+            </button>
+        </div>
+
+        <!-- Controls Container -->
+        <div class="bg-slate-50 border border-gray-200 rounded-xl p-4 md:p-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-6">
+                <!-- Progression -->
+                <div>
+                    <label for="progression" class="block mb-2 text-sm font-medium text-gray-700">Progression</label>
+                    <select id="progression" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="blues">12-Bar Blues</option>
+                        <option value="birdBlues">Bird Blues</option>
+                        <option value="rhythmChanges">Rhythm Changes</option>
+                        <option value="major-ii-v-i">Major ii-V-I</option>
+                        <option value="minor-ii-v-i">Minor ii-V-i</option>
+                        <option value="modal">Modal</option>
+                        <option value="descending-ii-v-is">Descending ii-V-Is</option>
+                        <option value="descending-minor-ii-v-is">Descending Minor ii-V-is</option>
+                        <option value="a-train">Take the A-Train</option>
+                        <option value="descending7ths">Descending 7th Chords</option>
+                        <option value="randomDiatonic">Random - Diatonic</option>
+                        <option value="randomAdvanced">Random - Advanced</option>
+                    </select>
+                </div>
+                 <!-- Key -->
+                <div>
+                    <label for="key" class="block mb-2 text-sm font-medium text-gray-700">Concert Key</label>
+                    <select id="key" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                        <option value="C">C</option>
+                        <option value="Db">D&#x266d;</option>
+                        <option value="D">D</option>
+                        <option value="Eb">E&#x266d;</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="F#">F&#x266f;</option>
+                        <option value="G">G</option>
+                        <option value="Ab">A&#x266d;</option>
+                        <option value="A">A</option>
+                        <option value="Bb">B&#x266d;</option>
+                        <option value="B">B</option>
+                    </select>
+                </div>
+                <!-- Transposition -->
+                <div>
+                    <label for="transposition" class="block mb-2 text-sm font-medium text-gray-700">Transposition</label>
+                    <select id="transposition" class="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus;border-blue-500 block w-full p-2.5">
+                        <option value="0">None</option>
+                        <option value="2">B&#x266d; (Trumpet, Tenor Sax)</option>
+                        <option value="9">E&#x266d; (Alto Sax, Bari Sax)</option>
+                        <option value="7">F (French Horn)</option>
+                        <option value="-2">G (Alto Flute)</option>
+                        <option value="-3">A (A-Clarinet)</option>
+                    </select>
+                </div>
+            </div>
+             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mt-6">
+                <!-- Tempo -->
+                <div>
+                    <label for="tempo" class="block mb-2 text-sm font-medium text-gray-700">Tempo: <span id="tempo-value">120</span> BPM</label>
+                    <input id="tempo" type="range" min="40" max="400" value="120" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                </div>
+                <!-- Volume -->
+                <div>
+                    <label for="volume" class="block mb-2 text-sm font-medium text-gray-700">Volume: <span id="volume-value">75</span>%</label>
+                    <input id="volume" type="range" min="0" max="100" value="75" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                </div>
+            </div>
+            <!-- Mute Buttons -->
+            <div class="mt-6 border-t border-gray-200 pt-6">
+                 <h3 class="text-center text-sm font-medium text-gray-700 mb-4">Track Control</h3>
+                <div class="grid grid-cols-3 gap-4">
+                    <button id="mute-piano-btn" class="mute-btn text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors">Piano</button>
+                    <button id="mute-bass-btn" class="mute-btn text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors">Bass</button>
+                    <button id="mute-drums-btn" class="mute-btn text-white font-bold py-2 px-4 rounded-lg text-sm transition-colors">Drums</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- License -->
+        <div class="mt-8 text-center text-xs text-gray-500">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/#ref-indicate-changes" target="_blank" rel="noopener noreferrer">
+                <img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nc-sa.svg" alt="Creative Commons License" class="mx-auto mb-2">
+                This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+            </a>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- DOM Elements ---
+            const playStopBtn = document.getElementById('play-stop-btn');
+            const tempoSlider = document.getElementById('tempo');
+            const tempoValue = document.getElementById('tempo-value');
+            const volumeSlider = document.getElementById('volume');
+            const volumeValue = document.getElementById('volume-value');
+            const keySelector = document.getElementById('key');
+            const transpositionSelector = document.getElementById('transposition');
+            const progressionSelector = document.getElementById('progression');
+            const progressionDisplay = document.getElementById('progression-display');
+            const mutePianoBtn = document.getElementById('mute-piano-btn');
+            const muteBassBtn = document.getElementById('mute-bass-btn');
+            const muteDrumsBtn = document.getElementById('mute-drums-btn');
+
